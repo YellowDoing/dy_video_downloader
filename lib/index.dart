@@ -4,8 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 import 'package:vd/plugin.dart';
 import 'package:vd/util.dart';
+import 'package:vd/video.dart';
 
 class IndexPage extends StatefulWidget {
   @override
@@ -20,8 +22,8 @@ class _IndexPageState extends State<IndexPage> {
   void initState() {
     methodChannel.setMethodCallHandler((call) async {
       if (call.method == 'download') {
-        String url = call.arguments;
-        _downloadVideo(url);
+        _url = call.arguments;
+        _downloadVideo();
       }
       return true;
     });
@@ -47,7 +49,9 @@ class _IndexPageState extends State<IndexPage> {
                 width: 100,
                 height: 40,
                 child: CupertinoButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    _downloadVideo();
+                    },
                   child: Text('下 载',style: TextStyle(color: Colors.white,fontSize: 15)),
                   color: Colors.redAccent,
                 ),
@@ -89,29 +93,34 @@ class _IndexPageState extends State<IndexPage> {
         ));
   }
 
-  void _downloadVideo(String url) {
+  void _downloadVideo() {
     toast('开始下载');
 
-    if (url.endsWith('/')) {
-      url = url.substring(0, url.length - 1);
+    if (_url.endsWith('/')) {
+      _url = _url.substring(0, _url.length - 1);
     }
 
-    getPath().then((path) {
-      debugPrint('路径:$path:$url');
-      http.get(url).then((value) {
-        var matchUrl = new RegExp("(?<=playAddr: \")https?://.+(?=\",)")
-            .stringMatch(value.body)
-            .replaceAll("playwm", "play");
-        http.get(matchUrl, headers: {
-          "Connection": "keep-alive",
-          "Host": "aweme.snssdk.com",
-          "User-Agent":
-              "Mozilla/5.0 (iPhone; CPU iPhone OS 12_1_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/16D57 Version/12.0 Safari/604.1",
-        }).then((value) {
-          new File('$path/${url.substring(url.lastIndexOf('/') + 1)}.mp4')
-              .writeAsBytes(value.bodyBytes);
-          toast('下载成功');
-        });
+    getVideoPath().then((value){
+      String path = value + '/VDVideo';
+      _saveVideo(path);
+    });
+  }
+
+  void _saveVideo(String path) {
+    http.get(_url).then((value) {
+      var matchUrl = new RegExp("(?<=playAddr: \")https?://.+(?=\",)")
+          .stringMatch(value.body)
+          .replaceAll("playwm", "play");
+      http.get(matchUrl, headers: {
+        "Connection": "keep-alive",
+        "Host": "aweme.snssdk.com",
+        "User-Agent":
+        "Mozilla/5.0 (iPhone; CPU iPhone OS 12_1_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/16D57 Version/12.0 Safari/604.1",
+      }).then((value) {
+        new File('$path/${_url.substring(_url.lastIndexOf('/') + 1)}.mp4')
+            .writeAsBytes(value.bodyBytes);
+        toast('下载成功');
+        eventBus.fire(new Video(path: path));
       });
     });
   }

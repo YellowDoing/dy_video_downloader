@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:vd/CupertinoLocalizations.dart';
 import 'package:vd/download.dart';
 import 'package:vd/index.dart';
 
@@ -11,6 +13,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoApp(
+      localizationsDelegates: [
+        ChineseCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate
+
+      ],
+      supportedLocales: [const Locale('zh','CH')
+        //,const Locale('en','US')
+      ],
       debugShowCheckedModeBanner: false,
       home: MyHomePage(),
     );

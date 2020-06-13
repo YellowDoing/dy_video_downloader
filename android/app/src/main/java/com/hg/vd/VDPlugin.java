@@ -63,7 +63,7 @@ public class VDPlugin implements FlutterPlugin, MethodChannel.MethodCallHandler 
     public void onMethodCall(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
         switch (call.method) {
             case "getPath":
-                result.success(Environment.getExternalStorageDirectory().getPath() + "/VDVideoDownload");
+                result.success(Environment.getExternalStorageDirectory().getPath());
                 break;
 
             case "getVideoThumbnail":

@@ -8,4 +8,5 @@ class Video{
   String size;
   int duration;
 
+  Video({this.path});
 }

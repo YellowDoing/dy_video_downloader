@@ -2,9 +2,12 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:vd/palyer.dart';
 import 'package:vd/plugin.dart';
+import 'package:vd/util.dart';
 import 'package:vd/video.dart';
+import 'package:event_bus/event_bus.dart';
 
 /// 下载列表
 class DownloadsPage extends StatefulWidget {
@@ -17,24 +20,22 @@ class _DownloadsPageState extends State<DownloadsPage> {
 
   @override
   void initState() {
-    if (Platform.isAndroid) {
-      getPath().then((path) {
-        _getVideos(path);
-      });
-    } else {}
+    getVideoPath().then((value) {
+      String path = value + '/VDVideo';
+      _getVideos(path);
+    });
+
+    eventBus.on<Video>().listen((video) => _newVideo(video));
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container( 
-      child: Text('asdawdasdw'),
-        
-        //child: ListView.builder(
-//            itemBuilder: (ctx, index) => _listItem(_videos[index]),
-//            itemCount: _videos.length),
-//       
-      );
+    return Container(
+      child: ListView.builder(
+          itemBuilder: (ctx, index) => _listItem(_videos[index]),
+          itemCount: _videos.length),
+    );
   }
 
   Widget _listItem(Video video) {
@@ -51,12 +52,14 @@ class _DownloadsPageState extends State<DownloadsPage> {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                video.thumbnail == null ? Container():Image.memory(
-                  video.thumbnail,
-                  width: 70,
-                  height: 70,
-                  fit: BoxFit.cover,
-                ),
+                video.thumbnail == null
+                    ? Container()
+                    : Image.memory(
+                        video.thumbnail,
+                        width: 70,
+                        height: 70,
+                        fit: BoxFit.cover,
+                      ),
                 Expanded(
                     child: Container(
                         margin: EdgeInsets.only(left: 12),
@@ -68,11 +71,9 @@ class _DownloadsPageState extends State<DownloadsPage> {
                                 margin: EdgeInsets.only(top: 6, bottom: 6),
                                 child: Text(video.size,
                                     style: TextStyle(
-                                        fontSize: 12, color: Colors.grey)),
-                              ),
+                                        fontSize: 12, color: Colors.grey))),
                               Text(_getVideoTime(video.duration),
-                                  style: TextStyle(
-                                      fontSize: 12, color: Colors.grey))
+                                  style: TextStyle(fontSize: 12, color: Colors.grey))
                             ]))),
                 _icons(video)
               ],
@@ -88,51 +89,56 @@ class _DownloadsPageState extends State<DownloadsPage> {
   Widget _icons(Video video) {
     return Row(
       children: <Widget>[
-        IconButton(icon: Icon(Icons.edit), onPressed: ()=>_showRenameDialog(video)),
+        IconButton(
+            icon: Icon(Icons.edit), onPressed: () => _showRenameDialog(video)),
         IconButton(
             icon: Icon(Icons.delete_forever),
             onPressed: () => _showDeleteDialog(video)),
-        IconButton(icon: Icon(Icons.share), onPressed: ()=> share(video.path))
+        IconButton(icon: Icon(Icons.share), onPressed: () => share(video.path))
       ],
     );
   }
 
-  void _showRenameDialog(Video video){
+  void _showRenameDialog(Video video) {
     var name = '';
-    
+
     showCupertinoDialog(
         context: context,
         builder: (ctx) => CupertinoAlertDialog(
-          title: Text("重命名",),
-          content: CupertinoTextField(
-            autofocus: true,
-            onChanged: (value) {
-              name = value;
-            },
-          ),
-          actions: <Widget>[
-            CupertinoDialogAction(
-              child: Text('取消'),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-            CupertinoDialogAction(
-              child: Text('修改'),
-              isDefaultAction: true,//加红
-              onPressed: () {
-                String newPath = video.path.substring(0,video.path.lastIndexOf("/") + 1) + name + '.mp4';
-                new File(video.path).rename(newPath);
-                setState(() {
-                  video.name = name + ".mp4";
-                });
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        ));
+              title: Text(
+                "重命名",
+              ),
+              content: CupertinoTextField(
+                autofocus: true,
+                onChanged: (value) {
+                  name = value;
+                },
+              ),
+              actions: <Widget>[
+                CupertinoDialogAction(
+                  child: Text('取消'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                CupertinoDialogAction(
+                  child: Text('修改'),
+                  isDefaultAction: true, //加红
+                  onPressed: () {
+                    String newPath = video.path
+                            .substring(0, video.path.lastIndexOf("/") + 1) +
+                        name +
+                        '.mp4';
+                    new File(video.path).rename(newPath);
+                    setState(() {
+                      video.name = name + ".mp4";
+                    });
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
+            ));
   }
-
 
   ///删除视频
   void _showDeleteDialog(Video video) {
@@ -149,7 +155,7 @@ class _DownloadsPageState extends State<DownloadsPage> {
                 ),
                 CupertinoDialogAction(
                   child: Text('删除'),
-                  isDestructiveAction: true,//加红
+                  isDestructiveAction: true, //加红
                   onPressed: () {
                     new File(video.path).deleteSync();
                     setState(() {
@@ -191,6 +197,18 @@ class _DownloadsPageState extends State<DownloadsPage> {
         _videos = videos;
       });
     }
+  }
+
+  void _newVideo(Video video) {
+    video.size = _getFileSize(video.path);
+    video.name = video.path.substring(video.path.lastIndexOf("/") + 1);
+    getVideoThumbnail(video.path).then((value) {
+      video.thumbnail = value['thumbnail'];
+      video.duration = value['duration'];
+      setState(() {
+        _videos.add(video);
+      });
+    });
   }
 
   String _getFileSize(String path) {
