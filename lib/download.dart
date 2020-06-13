@@ -9,6 +9,8 @@ import 'package:vd/util.dart';
 import 'package:vd/video.dart';
 import 'package:event_bus/event_bus.dart';
 
+import 'index.dart';
+
 /// 下载列表
 class DownloadsPage extends StatefulWidget {
   @override
@@ -16,6 +18,7 @@ class DownloadsPage extends StatefulWidget {
 }
 
 class _DownloadsPageState extends State<DownloadsPage> {
+
   var _videos = new List<Video>();
 
   @override
@@ -41,7 +44,7 @@ class _DownloadsPageState extends State<DownloadsPage> {
   Widget _listItem(Video video) {
     return InkWell(
       onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(
+        Navigator.of(context).push(CupertinoPageRoute(
             builder: (ctx) => PlayerPage(video, MediaQuery.of(context).size)));
       },
       child: Column(
@@ -161,6 +164,7 @@ class _DownloadsPageState extends State<DownloadsPage> {
                     setState(() {
                       _videos.remove(video);
                     });
+                    videoPaths.remove(video.name);
                     Navigator.pop(context);
                   },
                 ),
@@ -189,7 +193,7 @@ class _DownloadsPageState extends State<DownloadsPage> {
           video.duration = value['duration'];
         });
         video.name = element.path.substring(element.path.lastIndexOf("/") + 1);
-
+        videoPaths.add(video.name);
         return video;
       }).toList();
 
@@ -201,7 +205,7 @@ class _DownloadsPageState extends State<DownloadsPage> {
 
   void _newVideo(Video video) {
     video.size = _getFileSize(video.path);
-    video.name = video.path.substring(video.path.lastIndexOf("/") + 1);
+    videoPaths.add(video.name);
     getVideoThumbnail(video.path).then((value) {
       video.thumbnail = value['thumbnail'];
       video.duration = value['duration'];

@@ -8,5 +8,10 @@ class Video{
   String size;
   int duration;
 
-  Video({this.path});
+  Video({this.path,this.name});
+
+  @override
+  String toString() {
+    return 'Video{thumbnail: $thumbnail, path: $path, name: $name, size: $size, duration: $duration}';
+  }
 }

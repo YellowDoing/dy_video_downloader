@@ -15,7 +15,7 @@ class _CupertinoLocalizationsDelegate  extends LocalizationsDelegate<CupertinoLo
   @override
   bool shouldReload(LocalizationsDelegate old) {
     // TODO: implement shouldReload
-    throw UnimplementedError();
+    return false;
   }
 
   @override
@@ -35,7 +35,7 @@ class ChineseCupertinoLocalizations implements CupertinoLocalizations{
   
   @override
   // TODO: implement alertDialogLabel
-  String get alertDialogLabel => throw UnimplementedError();
+  String get alertDialogLabel =>'';
 
   @override
   // TODO: implement anteMeridiemAbbreviation

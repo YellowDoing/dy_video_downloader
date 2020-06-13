@@ -10,9 +10,9 @@
 
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="vd"
+        android:label="抖音下载器"
         android:usesCleartextTraffic="true"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/a">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleInstance"

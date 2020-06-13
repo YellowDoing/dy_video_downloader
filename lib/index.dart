@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
@@ -14,9 +15,11 @@ class IndexPage extends StatefulWidget {
   _IndexPageState createState() => _IndexPageState();
 }
 
+final List<String> videoPaths = new List();
+
 class _IndexPageState extends State<IndexPage> {
   var _url = '';
-  var _content = '测试';
+  var _content = '';
 
   @override
   void initState() {
@@ -39,23 +42,20 @@ class _IndexPageState extends State<IndexPage> {
         children: <Widget>[
           _buildInput(),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              Expanded(child: CupertinoButton(
-                onPressed: () {},
-                child: Text('粘贴'),
-                color: Colors.redAccent,
-              )),
-              Expanded( child:Container(
-                width: 100,
-                height: 40,
-                child: CupertinoButton(
-                  onPressed: () {
-                    _downloadVideo();
-                    },
-                  child: Text('下 载',style: TextStyle(color: Colors.white,fontSize: 15)),
-                  color: Colors.redAccent,
-                ),
-              )),
+              _btn('粘 贴', () {
+                Clipboard.getData(Clipboard.kTextPlain).then((value) {
+                  var url = _parseDVLink(value.text);
+                  setState(() {
+                    _content = url;
+                    _url = url;
+                  });
+                });
+              }, Colors.redAccent),
+              _btn('下 载', () {
+                _downloadVideo();
+              }, Colors.blue),
             ],
           )
         ],
@@ -63,9 +63,18 @@ class _IndexPageState extends State<IndexPage> {
     );
   }
 
+  Widget _btn(String text, VoidCallback tap, Color color) {
+    return CupertinoButton(
+      padding: EdgeInsets.fromLTRB(46, 0, 46, 0),
+      onPressed: tap,
+      child: Text(text,style: TextStyle(fontSize: 16),),
+      color: color,
+    );
+  }
+
   Container _buildInput() {
     return Container(
-        margin: EdgeInsets.all(26),
+        margin: EdgeInsets.fromLTRB(26, 34, 26, 34),
         padding: EdgeInsets.only(left: 24, right: 24),
         decoration: BoxDecoration(
             color: Colors.white,
@@ -94,19 +103,25 @@ class _IndexPageState extends State<IndexPage> {
   }
 
   void _downloadVideo() {
-    toast('开始下载');
-
     if (_url.endsWith('/')) {
       _url = _url.substring(0, _url.length - 1);
     }
 
-    getVideoPath().then((value){
+    String name = _url.substring(_url.lastIndexOf("/") + 1) + '.mp4';
+    if (videoPaths.contains(name)) {
+      toast('该视频已经下载了');
+      return;
+    }
+
+    toast('开始下载');
+
+    getVideoPath().then((value) {
       String path = value + '/VDVideo';
-      _saveVideo(path);
+      _saveVideo(path, name);
     });
   }
 
-  void _saveVideo(String path) {
+  void _saveVideo(String path, String name) {
     http.get(_url).then((value) {
       var matchUrl = new RegExp("(?<=playAddr: \")https?://.+(?=\",)")
           .stringMatch(value.body)
@@ -115,13 +130,20 @@ class _IndexPageState extends State<IndexPage> {
         "Connection": "keep-alive",
         "Host": "aweme.snssdk.com",
         "User-Agent":
-        "Mozilla/5.0 (iPhone; CPU iPhone OS 12_1_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/16D57 Version/12.0 Safari/604.1",
+            "Mozilla/5.0 (iPhone; CPU iPhone OS 12_1_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/16D57 Version/12.0 Safari/604.1",
       }).then((value) {
-        new File('$path/${_url.substring(_url.lastIndexOf('/') + 1)}.mp4')
-            .writeAsBytes(value.bodyBytes);
-        toast('下载成功');
-        eventBus.fire(new Video(path: path));
+        String filePath = '$path/$name';
+        new File(filePath).writeAsBytes(value.bodyBytes).then((value) {
+          toast('下载成功');
+          eventBus.fire(new Video(path: filePath, name: name));
+        });
       });
     });
+  }
+
+  String _parseDVLink(String link) {
+    int start = link.indexOf("http");
+    int end = link.lastIndexOf("/");
+    return link.substring(start, end);
   }
 }

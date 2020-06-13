@@ -17,11 +17,8 @@ class MyApp extends StatelessWidget {
         ChineseCupertinoLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalMaterialLocalizations.delegate
-
       ],
-      supportedLocales: [const Locale('zh','CH')
-        //,const Locale('en','US')
-      ],
+      supportedLocales: [const Locale('zh','CH')],
       debugShowCheckedModeBanner: false,
       home: MyHomePage(),
     );
@@ -40,7 +37,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CupertinoNavigationBar(
-        middle: Text('抖音/快手视频无水印下载'),
+        middle: Text('抖音视频无水印下载'),
       ),
       body: IndexedStack(
             index: _currentIndex,
