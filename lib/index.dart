@@ -35,31 +35,34 @@ class _IndexPageState extends State<IndexPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: double.infinity,
-      child: Column(
-        children: <Widget>[
-          _buildInput(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              _btn('粘 贴', () {
-                Clipboard.getData(Clipboard.kTextPlain).then((value) {
-                  var url = _parseDVLink(value.text);
-                  setState(() {
-                    _content = url;
-                    _url = url;
+    return CupertinoPageScaffold(
+      child: Container(
+        width: double.infinity,
+        height: double.infinity,
+        child: Column(
+          children: <Widget>[
+            _buildInput(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                _btn('粘 贴', () {
+                  test();
+                  Clipboard.getData(Clipboard.kTextPlain).then((value) {
+                    var url = _parseDVLink(value.text);
+                    setState(() {
+                      _content = url;
+                      _url = url;
+                    });
                   });
-                });
-              }, Colors.redAccent),
-              _btn('下 载', () {
-                _downloadVideo();
-              }, Colors.blue),
-            ],
-          )
-        ],
-      ),
+                }, Colors.redAccent),
+                _btn('下 载', () {
+                  _downloadVideo();
+                }, Colors.blue),
+              ],
+            )
+          ],
+        ),
+      )
     );
   }
 

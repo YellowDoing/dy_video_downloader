@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:event_bus/event_bus.dart';
+import 'package:flutter/foundation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:vd/plugin.dart';
@@ -21,7 +22,7 @@ Future<String> getVideoPath() async {
     String path = await getPath();
     return path;
   } else {
-    Directory directory = await getApplicationDocumentsDirectory();
+    Directory directory = await getLibraryDirectory();
     return directory.path;
   }
 }

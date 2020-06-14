@@ -161,4 +161,5 @@ class ChineseCupertinoLocalizations implements CupertinoLocalizations{
     return SynchronousFuture<CupertinoLocalizations>(ChineseCupertinoLocalizations(locale));
   }
 
+
 }

@@ -34,7 +34,7 @@ class _DownloadsPageState extends State<DownloadsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return CupertinoPageScaffold(
       child: ListView.builder(
           itemBuilder: (ctx, index) => _listItem(_videos[index]),
           itemCount: _videos.length),
@@ -172,7 +172,7 @@ class _DownloadsPageState extends State<DownloadsPage> {
             ));
   }
 
-  void _getVideos(String path) {
+  void _getVideos(String path) async{
     Directory directory = new Directory(path);
 
     bool exists = directory.existsSync();
@@ -184,21 +184,26 @@ class _DownloadsPageState extends State<DownloadsPage> {
       List<FileSystemEntity> paths = directory.listSync();
       debugPrint('视频数量:${paths.length}');
 
-      var videos = paths.map((element) {
+    paths.forEach((element) {
+        debugPrint(element.path);
+
         Video video = new Video();
         video.path = element.path;
         video.size = _getFileSize(element.path);
-        getVideoThumbnail(element.path).then((value) {
-          video.thumbnail = value['thumbnail'];
-          video.duration = value['duration'];
-        });
         video.name = element.path.substring(element.path.lastIndexOf("/") + 1);
         videoPaths.add(video.name);
-        return video;
-      }).toList();
 
-      setState(() {
-        _videos = videos;
+        getVideoThumbnail(element.path).then((value) {
+          video.thumbnail = value;
+          getVideoDuration(element.path).then((duration){
+            video.duration = duration;
+            toast('$duration');
+            setState(() {
+              _videos .add(video);
+            });
+          });
+        });
+
       });
     }
   }
@@ -207,8 +212,8 @@ class _DownloadsPageState extends State<DownloadsPage> {
     video.size = _getFileSize(video.path);
     videoPaths.add(video.name);
     getVideoThumbnail(video.path).then((value) {
-      video.thumbnail = value['thumbnail'];
-      video.duration = value['duration'];
+      video.thumbnail = value;
+      //video.duration = value['duration'];
       setState(() {
         _videos.add(video);
       });

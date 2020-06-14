@@ -4,6 +4,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:vd/CupertinoLocalizations.dart';
 import 'package:vd/download.dart';
 import 'package:vd/index.dart';
+import 'package:vd/palyer.dart';
+import 'package:vd/video.dart';
 
 void main() {
   runApp(MyApp());
@@ -18,6 +20,9 @@ class MyApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalMaterialLocalizations.delegate
       ],
+      theme: CupertinoThemeData(
+        brightness: Brightness.light,
+      ),
       supportedLocales: [const Locale('zh','CH')],
       debugShowCheckedModeBanner: false,
       home: MyHomePage(),
@@ -43,7 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
             index: _currentIndex,
             children: <Widget>[
               IndexPage(),
-              DownloadsPage()],
+      DownloadsPage()]
           ),
       bottomNavigationBar: _buildBottomNavigationBar(),
     );

@@ -1,12 +1,19 @@
 #import "AppDelegate.h"
 #import "GeneratedPluginRegistrant.h"
+#import "DYPlugin.h"
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-  [GeneratedPluginRegistrant registerWithRegistry:self];
-  // Override point for customization after application launch.
+    [GeneratedPluginRegistrant registerWithRegistry:self];
+  
+    
+    
+    [DYPlugin registerWithRegistrar:[self registrarForPlugin:@"DYPlugin"]];
+    
+
+    
   return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }
 
@@ -17,4 +24,6 @@
     return YES;
 }
 
+
+	
 @end

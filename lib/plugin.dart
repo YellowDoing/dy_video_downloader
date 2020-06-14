@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/services.dart';
 
-const methodChannel =  const MethodChannel("com.hg.dy");
+const methodChannel =  const MethodChannel("com.hg.dy/DYPlugin");
 
 
 
@@ -21,8 +21,13 @@ Future<String> getPath() async{
    return path;
 }
 
-Future<Map> getVideoThumbnail(String videoPath) async{
-  Map data = await methodChannel.invokeMethod("getVideoThumbnail",videoPath);
+Future<Uint8List> getVideoThumbnail(String videoPath) async{
+  Uint8List data = await methodChannel.invokeMethod("getVideoThumbnail",videoPath);
+  return data;
+}
+
+Future<int> getVideoDuration(String videoPath) async{
+  int data = await methodChannel.invokeMethod("getVideoDuration",videoPath);
   return data;
 }
 

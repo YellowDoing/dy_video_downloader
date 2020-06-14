@@ -28,7 +28,7 @@ class _PlayerPageState extends State<PlayerPage> {
     videoPlayerController = new VideoPlayerController.file(new File(widget._video.path));
     chewieController = ChewieController(
       videoPlayerController: videoPlayerController,
-      aspectRatio: widget._size.width/ widget._size.height,
+      aspectRatio: widget._size.aspectRatio,
       autoPlay: true,
       looping: true,
       allowFullScreen: false
