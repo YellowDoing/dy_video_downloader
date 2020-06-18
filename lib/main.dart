@@ -4,8 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:vd/CupertinoLocalizations.dart';
 import 'package:vd/download.dart';
 import 'package:vd/index.dart';
-import 'package:vd/palyer.dart';
-import 'package:vd/video.dart';
+
 
 void main() {
   runApp(MyApp());

@@ -27,7 +27,12 @@ static NSString *const CHANNEL_NAME = @"com.hg.dy/DYPlugin";
         result(thumbnail);
     } else if ([@"getVideoDuration" isEqualToString:call.method]) {
         result([self getVideoTimeByUrlString:call.arguments]);
-    } else {
+    }  else if ([@"shareVideo" isEqualToString:call.method]) {
+        
+        
+        
+           result([self getVideoTimeByUrlString:call.arguments]);
+    }else {
         result(FlutterMethodNotImplemented);
     }
 }
