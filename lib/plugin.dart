@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/services.dart';
@@ -32,6 +33,10 @@ Future<int> getVideoDuration(String videoPath) async{
 }
 
 void share(String path){
-  methodChannel.invokeMethod("share",path);
+  if(Platform.isAndroid){
+    methodChannel.invokeMethod("share",path);
+  }else{
+    methodChannel.invokeMethod('shareVideo',path);
+  }
 }
 

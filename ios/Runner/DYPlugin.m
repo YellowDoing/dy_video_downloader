@@ -1,5 +1,6 @@
 #import "DYPlugin.h"
 #import <AVFoundation/AVFoundation.h>
+#import "AppDelegate.h"
 
 static NSString *const CHANNEL_NAME = @"com.hg.dy/DYPlugin";
 
@@ -18,23 +19,28 @@ static NSString *const CHANNEL_NAME = @"com.hg.dy/DYPlugin";
     instance.channel = channel;
     [registrar addMethodCallDelegate:instance channel:channel];
 }
-
+  
 
 
 - (void)handleMethodCall:(FlutterMethodCall *)call result:(FlutterResult)result {
     if([@"getVideoThumbnail" isEqualToString:call.method]) {
         FlutterStandardTypedData *thumbnail = [self getScreenShotImageFromVideoPath:call.arguments];
         result(thumbnail);
-    } else if ([@"getVideoDuration" isEqualToString:call.method]) {
-        result([self getVideoTimeByUrlString:call.arguments]);
-    }  else if ([@"shareVideo" isEqualToString:call.method]) {
-        
-        
-        
-           result([self getVideoTimeByUrlString:call.arguments]);
+    }else if ([@"shareVideo" isEqualToString:call.method]) {
+        [self shareVideo:call.arguments];
+        result(nil);
     }else {
         result(FlutterMethodNotImplemented);
     }
+}
+
+
+-(void) shareVideo:(NSString *) filePath{
+    NSURL *fileURL = [NSURL fileURLWithPath:filePath];
+    UIActivityViewController *c = [[UIActivityViewController alloc]initWithActivityItems:@[fileURL] applicationActivities:nil];
+    AppDelegate *appdelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    UIViewController *rootViewController = appdelegate.window.rootViewController;
+    [rootViewController presentViewController:c animated:YES completion:nil];
 }
 
 /**
@@ -71,24 +77,6 @@ static NSString *const CHANNEL_NAME = @"com.hg.dy/DYPlugin";
     FlutterStandardTypedData *data = [FlutterStandardTypedData typedDataWithBytes:imageData];
 
     return data;
-
 }
-
-
-//获取视频时长
-- (NSNumber*)getVideoTimeByUrlString:(NSString*)urlString {
-NSDictionary *opts = [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:NO]
-forKey:AVURLAssetPreferPreciseDurationAndTimingKey];
-
-    
-    NSURL*videoUrl = [NSURL URLWithString:urlString ];
-AVURLAsset *avUrl = [AVURLAsset URLAssetWithURL:videoUrl options:opts];
-CMTime time = [avUrl duration];
-int seconds = ceil(time.value/time.timescale);
-return [NSNumber numberWithInt:seconds];
-
-}
-
-
 
 @end

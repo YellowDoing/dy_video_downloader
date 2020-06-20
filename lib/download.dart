@@ -18,7 +18,6 @@ class DownloadsPage extends StatefulWidget {
 }
 
 class _DownloadsPageState extends State<DownloadsPage> {
-
   var _videos = new List<Video>();
 
   @override
@@ -71,12 +70,10 @@ class _DownloadsPageState extends State<DownloadsPage> {
                             children: <Widget>[
                               Text(video.name, style: TextStyle(fontSize: 16)),
                               Container(
-                                margin: EdgeInsets.only(top: 6, bottom: 6),
-                                child: Text(video.size,
-                                    style: TextStyle(
-                                        fontSize: 12, color: Colors.grey))),
-                              Text(_getVideoTime(video.duration),
-                                  style: TextStyle(fontSize: 12, color: Colors.grey))
+                                  margin: EdgeInsets.only(top: 6, bottom: 6),
+                                  child: Text(video.size,
+                                      style: TextStyle(
+                                          fontSize: 12, color: Colors.grey)))
                             ]))),
                 _icons(video)
               ],
@@ -172,7 +169,7 @@ class _DownloadsPageState extends State<DownloadsPage> {
             ));
   }
 
-  void _getVideos(String path) async{
+  void _getVideos(String path) async {
     Directory directory = new Directory(path);
 
     bool exists = directory.existsSync();
@@ -184,7 +181,7 @@ class _DownloadsPageState extends State<DownloadsPage> {
       List<FileSystemEntity> paths = directory.listSync();
       debugPrint('视频数量:${paths.length}');
 
-    paths.forEach((element) {
+      paths.forEach((element) {
         debugPrint(element.path);
 
         Video video = new Video();
@@ -195,15 +192,10 @@ class _DownloadsPageState extends State<DownloadsPage> {
 
         getVideoThumbnail(element.path).then((value) {
           video.thumbnail = value;
-          getVideoDuration(element.path).then((duration){
-            video.duration = duration;
-            toast('$duration');
-            setState(() {
-              _videos .add(video);
-            });
+          setState(() {
+            _videos.add(video);
           });
         });
-
       });
     }
   }
