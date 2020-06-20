@@ -43,8 +43,15 @@ class _DownloadsPageState extends State<DownloadsPage> {
   Widget _listItem(Video video) {
     return InkWell(
       onTap: () {
-        Navigator.of(context).push(CupertinoPageRoute(
-            builder: (ctx) => PlayerPage(video, MediaQuery.of(context).size)));
+        getVideoSize(video.path).then((size){
+          debugPrint('视频宽高"$size');
+          var sizes = size.split(',');
+          double width = double.parse(sizes[0]);
+          double height = double.parse(sizes[1]);
+          Navigator.of(context).push(CupertinoPageRoute(
+              builder: (ctx)=>PlayerPage(video, width/height)));
+        });
+
       },
       child: Column(
         children: <Widget>[
@@ -246,4 +253,6 @@ class _DownloadsPageState extends State<DownloadsPage> {
       return '${duration ~/ 3600} 小时 ${duration % 3600} 分';
     }
   }
+
+
 }

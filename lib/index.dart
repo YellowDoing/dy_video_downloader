@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
-import 'package:path_provider/path_provider.dart';
 import 'package:vd/plugin.dart';
 import 'package:vd/util.dart';
 import 'package:vd/video.dart';
@@ -20,7 +19,6 @@ final List<String> videoPaths = new List();
 class _IndexPageState extends State<IndexPage> {
 
   var _url = '';
-  var _content = '';
 
   @override
   void initState() {
@@ -38,20 +36,23 @@ class _IndexPageState extends State<IndexPage> {
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       child: Container(
+        padding: EdgeInsets.only(top: 14),
         width: double.infinity,
         height: double.infinity,
         child: Column(
           children: <Widget>[
+
+            Text('步骤'),
+            Text('1.在抖音视频点击分享图标 - 复制链接'),
+            Text('2.打开抖音无水印APP - 粘贴 - 下载'),
             _buildInput(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 _btn('粘 贴', () {
-                  test();
                   Clipboard.getData(Clipboard.kTextPlain).then((value) {
                     var url = _parseDVLink(value.text);
                     setState(() {
-                      _content = url;
                       _url = url;
                     });
                   });
@@ -95,7 +96,7 @@ class _IndexPageState extends State<IndexPage> {
         child: Center(
           child: TextField(
             controller: TextEditingController.fromValue(
-                TextEditingValue(text: _content)),
+                TextEditingValue(text: _url)),
             decoration: const InputDecoration(
               border: InputBorder.none,
               hintText: '抖音视频链接'
@@ -137,6 +138,7 @@ class _IndexPageState extends State<IndexPage> {
         "User-Agent":
             "Mozilla/5.0 (iPhone; CPU iPhone OS 12_1_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/16D57 Version/12.0 Safari/604.1",
       }).then((value) {
+        debugPrint('下载回调');
         String filePath = '$path/$name';
         new File(filePath).writeAsBytes(value.bodyBytes).then((value) {
           toast('下载成功');
@@ -147,8 +149,9 @@ class _IndexPageState extends State<IndexPage> {
   }
 
   String _parseDVLink(String link) {
-    int start = link.indexOf("http");
-    int end = link.lastIndexOf("/");
+    var host = "https://v.douyin.com/";
+    int start = link.indexOf(host);
+    int end = start + host.length + 7;
     return link.substring(start, end);
   }
 }

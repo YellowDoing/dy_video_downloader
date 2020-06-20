@@ -29,6 +29,21 @@ static NSString *const CHANNEL_NAME = @"com.hg.dy/DYPlugin";
     }else if ([@"shareVideo" isEqualToString:call.method]) {
         [self shareVideo:call.arguments];
         result(nil);
+    }else if ([@"getVideoSize" isEqualToString:call.method]) {
+        NSURL *fileURL = [NSURL fileURLWithPath:call.arguments];
+        AVURLAsset  *asset = [AVURLAsset assetWithURL:fileURL];
+        NSArray *array = asset.tracks;
+        CGSize videoSize = CGSizeZero;
+        for(AVAssetTrack  *track in array)
+        {
+            if([track.mediaType isEqualToString:AVMediaTypeVideo])
+            {
+                  videoSize = track.naturalSize;
+            }
+        }
+        NSString *stringFloat = [NSString stringWithFormat:@"%f,%f",videoSize.width,videoSize.height];
+        
+        result(stringFloat);
     }else {
         result(FlutterMethodNotImplemented);
     }

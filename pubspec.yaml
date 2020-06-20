@@ -33,7 +33,6 @@ dependencies:
   chewie: ^0.9.10
   video_player: ^0.10.11+1
   http: ^0.12.1
-  shared_preferences: ^0.5.7+3
   path_provider: ^1.6.10
   fluttertoast: ^4.0.1
   event_bus: ^1.1.1

@@ -2,16 +2,17 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:chewie/chewie.dart';
+import 'package:vd/plugin.dart';
 import 'package:vd/video.dart';
 import 'package:video_player/video_player.dart';
 
 class PlayerPage extends StatefulWidget {
 
   final  Video _video;
-  final Size _size;
+  final double _aspectRatio;
 
 
-  PlayerPage(this._video,this._size);
+  PlayerPage(this._video,this._aspectRatio);
 
   @override
   _PlayerPageState createState() => _PlayerPageState();
@@ -20,19 +21,21 @@ class PlayerPage extends StatefulWidget {
 }
 
 class _PlayerPageState extends State<PlayerPage> {
-  var videoPlayerController;
+  VideoPlayerController videoPlayerController;
   var chewieController;
 
   @override
   void initState() {
     videoPlayerController = new VideoPlayerController.file(new File(widget._video.path));
     chewieController = ChewieController(
-      videoPlayerController: videoPlayerController,
-      aspectRatio: widget._size.aspectRatio,
-      autoPlay: true,
-      looping: true,
-      allowFullScreen: false
+        videoPlayerController: videoPlayerController,
+        aspectRatio: widget._aspectRatio,
+        autoPlay: true,
+        looping: true,
+        allowFullScreen: false
     );
+
+
     super.initState();
   }
 
@@ -50,8 +53,9 @@ class _PlayerPageState extends State<PlayerPage> {
 
   @override
   void dispose() {
-    videoPlayerController.dispose();
-    chewieController.dispose();
+    videoPlayerController?.pause();
+    videoPlayerController?.dispose();
+    chewieController?.dispose();
     super.dispose();
   }
 }

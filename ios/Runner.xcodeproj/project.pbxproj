@@ -16,7 +16,6 @@
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
 		C724F41E24961AAC00CAFBCE /* DYPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = C724F41D24961AAC00CAFBCE /* DYPlugin.m */; };
 		C724F4212496269800CAFBCE /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C724F4202496269800CAFBCE /* AVFoundation.framework */; };
-		C795257A24939D7B007D7F3B /* ac.png in Resources */ = {isa = PBXBuildFile; fileRef = C795257924939D7B007D7F3B /* ac.png */; };
 		EE914E7FCE60F3C496BF8258 /* libPods-Runner.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AD6A8C8D1E5857ED52A3E5C /* libPods-Runner.a */; };
 /* End PBXBuildFile section */
 
@@ -44,7 +43,7 @@
 		7AFFD8EE1D35381100E5BB4D /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		9740EEB21CF90195004384FC /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = Flutter/Debug.xcconfig; sourceTree = "<group>"; };
 		9740EEB31CF90195004384FC /* Generated.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Generated.xcconfig; path = Flutter/Generated.xcconfig; sourceTree = "<group>"; };
-		97C146EE1CF9000F007C117D /* vd.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = vd.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		97C146EE1CF9000F007C117D /* 抖音无水印.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "抖音无水印.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		97C146F21CF9000F007C117D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		97C146FB1CF9000F007C117D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		97C146FD1CF9000F007C117D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -53,7 +52,6 @@
 		C724F41D24961AAC00CAFBCE /* DYPlugin.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DYPlugin.m; sourceTree = "<group>"; };
 		C724F41F24961AC600CAFBCE /* DYPlugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DYPlugin.h; sourceTree = "<group>"; };
 		C724F4202496269800CAFBCE /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
-		C795257924939D7B007D7F3B /* ac.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ac.png; path = Runner/Assets.xcassets/AppIcon.appiconset/ac.png; sourceTree = "<group>"; };
 		CB252E373A52FE2FCE1218AA /* Pods-Runner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"; sourceTree = "<group>"; };
 		FBF4C8D67E73C24D9FC82C56 /* Pods-Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -85,7 +83,6 @@
 		97C146E51CF9000F007C117D = {
 			isa = PBXGroup;
 			children = (
-				C795257924939D7B007D7F3B /* ac.png */,
 				9740EEB11CF90186004384FC /* Flutter */,
 				97C146F01CF9000F007C117D /* Runner */,
 				97C146EF1CF9000F007C117D /* Products */,
@@ -97,7 +94,7 @@
 		97C146EF1CF9000F007C117D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				97C146EE1CF9000F007C117D /* vd.app */,
+				97C146EE1CF9000F007C117D /* 抖音无水印.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -169,7 +166,7 @@
 			);
 			name = Runner;
 			productName = Runner;
-			productReference = 97C146EE1CF9000F007C117D /* vd.app */;
+			productReference = 97C146EE1CF9000F007C117D /* 抖音无水印.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -209,7 +206,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C795257A24939D7B007D7F3B /* ac.png in Resources */,
 				97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */,
 				3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */,
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
@@ -378,7 +374,7 @@
 			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 7V38H4JXTS;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -394,8 +390,9 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
+				MARKETING_VERSION = 1.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hg.vd;
-				PRODUCT_NAME = vd;
+				PRODUCT_NAME = "抖音无水印";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Profile;
@@ -510,7 +507,7 @@
 			baseConfigurationReference = 9740EEB21CF90195004384FC /* Debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 7V38H4JXTS;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -526,8 +523,9 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
+				MARKETING_VERSION = 1.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hg.vd;
-				PRODUCT_NAME = vd;
+				PRODUCT_NAME = "抖音无水印";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -537,7 +535,7 @@
 			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 7V38H4JXTS;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -553,8 +551,9 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
+				MARKETING_VERSION = 1.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hg.vd;
-				PRODUCT_NAME = vd;
+				PRODUCT_NAME = "抖音无水印";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

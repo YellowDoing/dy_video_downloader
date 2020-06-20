@@ -27,10 +27,10 @@ Future<Uint8List> getVideoThumbnail(String videoPath) async{
   return data;
 }
 
-Future<int> getVideoDuration(String videoPath) async{
-  int data = await methodChannel.invokeMethod("getVideoDuration",videoPath);
-  return data;
-}
+//Future<int> getVideoDuration(String videoPath) async{
+//  int data = await methodChannel.invokeMethod("getVideoDuration",videoPath);
+//  return data;
+//}
 
 void share(String path){
   if(Platform.isAndroid){
@@ -40,3 +40,7 @@ void share(String path){
   }
 }
 
+Future<String> getVideoSize(String path) async{
+  var size = await methodChannel.invokeMethod("getVideoSize",path);
+return size;
+}
