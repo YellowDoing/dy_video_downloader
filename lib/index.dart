@@ -18,6 +18,7 @@ class IndexPage extends StatefulWidget {
 final List<String> videoPaths = new List();
 
 class _IndexPageState extends State<IndexPage> {
+
   var _url = '';
   var _content = '';
 
@@ -97,6 +98,7 @@ class _IndexPageState extends State<IndexPage> {
                 TextEditingValue(text: _content)),
             decoration: const InputDecoration(
               border: InputBorder.none,
+              hintText: '抖音视频链接'
             ),
             onChanged: (value) {
               _url = value;
